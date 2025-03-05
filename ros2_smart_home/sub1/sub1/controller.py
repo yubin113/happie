@@ -50,6 +50,7 @@ class Controller(Node):
 
 
     def listener_callback(self, msg):
+        print("터틀봇 상태 데이터 수신됨!")
         self.is_turtlebot_status=True
         self.turtlebot_status_msg=msg
 
@@ -101,15 +102,27 @@ class Controller(Node):
         로직 6. 터틀봇 반시계방향 회전
         '''
 
+    def status_callback(self, msg):
+        print("dddddd")
 
     def timer_callback(self):
 
         '''
         로직1. 수신 데이터 출력
-        터틀봇 상태 : 현재 선솏도, 현재 각속도, 배터리 상태, 충전 상태 출력
+        터틀봇 상태 : 현재 선속도, 현재 각속도, 배터리 상태, 충전 상태 출력
         환경 정보 : 날짜, 시간, 온도, 날씨 출력
         가전 제품 : 가전상태 출력        
         '''
+
+
+
+        # 1. 터틀봇 상태 출력 (수신 데이터가 있을 경우에만)
+        print(self.is_turtlebot_status)
+        if self.is_turtlebot_status:
+            print(f"[터틀봇 상태] 선속도: {self.turtlebot_status_msg.twist.linear.x}")
+        else:
+            print("[터틀봇 상태] 데이터 수신 중...")
+
 
         ## IOT(가전) 제어 함수
         # self.app_all_on()
