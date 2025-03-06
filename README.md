@@ -20,3 +20,15 @@
     - 거주지 관리
         - 링거 홀대 / 휠체어 / 보행보조기 등 의료보조기 관리
         - 치매 예방이나 민원 기입 등
+
+### 2025.03.06 : 팀 그라운드룰 설정, 사전학습
+- 시뮬레이터
+- ROS2
+- Differential Drive
+- OpenCV
+- IMAGE 형식
+- Custom Object
+- Hand Control
+- IMU
+- 주행기록계(Odometry)
+- Follow the carrot
