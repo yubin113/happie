@@ -36,5 +36,5 @@
 ### 2025.03.07 : ros2, 시뮬레이터 적응하기
 - setup.bat, local_setup.bat을 call 하기
 - colcon build 하기
-- 시뮬레이터를 연결하여 데이터 확인하기기
+- 시뮬레이터를 연결하여 데이터 확인하기
 
