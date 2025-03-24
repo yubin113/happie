@@ -30,7 +30,13 @@ setup(
             'hand_control = my_package.handcontrol:main',
             'make_path = my_package.make_path:main',
             'path_tracking = my_package.path_tracking:main',
-            'path_pub = my_package.path_pub:main'
+            'path_pub = my_package.path_pub:main',
+            'load_map = my_package.load_map:main',
+            'a_star = my_package.a_star:main',
+            'a_star_local_path = my_package.a_star_local_path:main',
+            'ex_calib = my_package.ex_calib:main',
+            'human_detector = my_package.human_detector:main',
+            'seg_binarizer = my_package.seg_binarizer:main'
         ],
     },
 )

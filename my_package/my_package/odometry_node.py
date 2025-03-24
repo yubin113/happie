@@ -21,7 +21,7 @@ class Odom(Node):
         self.subscription = self.create_subscription(TurtlebotStatus, '/turtlebot_status', self.listener_callback, 10)
         self.imu_sub = self.create_subscription(Imu, '/imu', self.imu_callback, 10)
         self.odom_publisher = self.create_publisher(Odometry, 'odom', 10)
-        self.broadcaster = tf2_ros.TransformBroadcaster(self)
+        self.broadcaster = tf2_ros.TransformBroadcaster(self) ## TF를 사용하여 변환을 브로드캐스트함 
 
         # 로봇의 pose를 저장할 변수
         self.odom_msg = Odometry()
