@@ -36,7 +36,8 @@ setup(
             'a_star_local_path = my_package.a_star_local_path:main',
             'ex_calib = my_package.ex_calib:main',
             'human_detector = my_package.human_detector:main',
-            'seg_binarizer = my_package.seg_binarizer:main'
+            'seg_binarizer = my_package.seg_binarizer:main',
+            'run_mapping = my_package.run_mapping:main'
         ],
     },
 )
