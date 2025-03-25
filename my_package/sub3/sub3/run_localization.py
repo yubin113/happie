@@ -55,74 +55,29 @@ params_mcl = {
 
 
 def compute_relative_pose(pose_i, pose_j):
+    # 1단계: pose_i와 pose_j에 대한 변환 행렬 계산
+    T_i = utils.xyh2mat2D(pose_i)
+    T_j = utils.xyh2mat2D(pose_j)
 
-    # 로봇의 상대 좌표에 대한 pose를 내놓는 역할을 합니다
-    
-    # 로직 순서
-    # 1. 두 pose를 기준으로 하는 좌표변환 행렬 정의
-    # 2. Rot 행렬, trans 백터 추출
-    # 3. pose i 기준 pose j에 대한 Rot 행렬, trans 백터 계산
-    # 4. 위의 Rot 행렬, trans 백터로 pose_ij를 계산    
-        
-    """
-    로직 1 : 두 pose를 기준으로 하는 좌표변환 행렬 정의
-    T_i = xyh2mat2D(pose_i)
-    T_j = xyh2mat2D(pose_j)
+    # 2단계: 변환 행렬에서 회전 행렬(R)과 평행 이동 벡터(t) 추출
+    R_i = T_i[:2, :2]  # T_i에서 회전 행렬 추출
+    t_i = T_i[:2, 2]   # T_i에서 평행 이동 벡터 추출
 
-    """
-    
-    """
-    로직 2 : Rot 행렬, trans 백터 추출
-    R_i = 
-    t_i = 
+    R_j = T_j[:2, :2]  # T_j에서 회전 행렬 추출
+    t_j = T_j[:2, 2]   # T_j에서 평행 이동 벡터 추출
 
-    """
+    # 3단계: pose_i 기준으로 pose_j에 대한 상대 회전 행렬(R_ij)과 평행 이동 벡터(t_ij) 계산
+    R_ij = np.dot(R_j, R_i.T)  # R_ij = R_j * R_i^T
+    t_ij = t_j - np.dot(R_ij, t_i)  # t_ij = t_j - R_ij * t_i
 
-    """
-    로직 3 : pose i 기준 pose j에 대한 Rot 행렬, trans 백터 계산
-    R_ij = 
-    t_ij = 
-    
-    """
+    # 4단계: 상대 좌표 pose_ij 계산
+    pose_ij = np.array([0.0, 0.0, 0.0])
 
-    """
-    로직 4 : 위의 Rot 행렬, trans 백터로 pose_ij를 계산
-    
-    pose_ij = np.array([0.0, 0.0, 0.0])    
-    pose_ij[:2] = 
-    pose_ij[2] = 
+    # 평행 이동 벡터는 그대로 t_ij 적용
+    pose_ij[:2] = t_ij
 
-    """
-
-    """
-    테스트
-
-    pose_i = np.array([2, 3, 30])
-    pose_j = np.array([3, 5, 60]) 이면
-    
-    T_i = [[ 0.8660254 -0.5        2.       ]
-            [ 0.5        0.8660254  3.       ]
-            [ 0.         0.         1.       ]]
-    
-    T_j = [[ 0.5       -0.8660254  3.       ]
-            [ 0.8660254  0.5        5.       ]
-            [ 0.         0.         1.       ]]
-    
-    R_i = [[ 0.8660254  0.5      ]
-            [-0.5        0.8660254]]
-    
-    t_i = [-3.23205081 -1.59807621]
-
-    R_ij = [[ 0.8660254 -0.5      ]
-            [ 0.5        0.8660254]]
-
-    t_ij = [1.8660254  1.23205081]
-
-    pose_ij = [ 1.8660254, 1.23205081, 30. ]
-
-    가 나와야한다
-
-    """    
+    # 회전 각도는 R_ij에서 arctan2를 사용하여 계산
+    pose_ij[2] = np.degrees(np.arctan2(R_ij[1, 0], R_ij[0, 0]))  # 각도를 도 단위로 계산
 
     return pose_ij
 
