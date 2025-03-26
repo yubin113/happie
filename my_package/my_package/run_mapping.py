@@ -30,18 +30,17 @@ import time
 # 12. 맵 저장
 
 params_map = {
-    "MAP_RESOLUTION": 0.05,
+    "MAP_RESOLUTION": 0.04,
     "OCCUPANCY_UP": 0.02,
     "OCCUPANCY_DOWN": 0.01,
-    "MAP_CENTER": (-8.0, -4.0),
-    "MAP_SIZE": (17.5, 17.5),
+    "MAP_CENTER": (-50, -50),
+    "MAP_SIZE": (30, 30),
     "MAP_FILENAME": 'test.png',
-    "MAPVIS_RESIZE_SCALE": 2.0
+    "MAPVIS_RESIZE_SCALE": 1.0
 }
 
 ## Bresenham's Algorithm
 def createLineIterator(P1, P2, img):
-    print("createLineIterator start!!!")
     # Bresenham's line algorithm을 구현해서 이미지에 직선을 그리는 메소드
 
     imageH, imageW = img.shape[:2]
@@ -53,7 +52,7 @@ def createLineIterator(P1, P2, img):
     dY = P2Y - P1Y
     dXa = abs(dX)
     dYa = abs(dY)
-    
+
     ## 로직 2 : 직선을 그릴 grid map의 픽셀 좌표를 넣을 numpy array 를 predifine
     itbuffer = np.empty((max(dYa, dXa), 2), dtype=np.int32)
     itbuffer.fill(np.nan)
@@ -61,8 +60,8 @@ def createLineIterator(P1, P2, img):
     ## 로직 3 : 직선 방향 체크
     negY = P1Y > P2Y
     negX = P1X > P2X
-    
-    ## 로직 4 : 수직선의 픽셀 좌표 계산   
+
+    ## 로직 4 : 수직선의 픽셀 좌표 계산
     if P1X == P2X:
         itbuffer[:, 0] = P1X
         itbuffer[:, 1] = np.arange(P1Y, P2Y, -1 if negY else 1)
@@ -70,7 +69,7 @@ def createLineIterator(P1, P2, img):
     elif P1Y == P2Y:
         itbuffer[:, 1] = P1Y
         itbuffer[:, 0] = np.arange(P1X, P2X, -1 if negX else 1)
-    ## 로직 6 : 대각선의 픽셀 좌표 계산  
+    ## 로직 6 : 대각선의 픽셀 좌표 계산
     else:
         steepSlope = dYa > dXa
         slope = dY / dX
@@ -80,7 +79,7 @@ def createLineIterator(P1, P2, img):
         else:
             itbuffer[:, 0] = np.arange(P1X, P2X, -1 if negX else 1)
             itbuffer[:, 1] = P1Y + (itbuffer[:, 0] - P1X) * slope
-    
+
     itbuffer = itbuffer[(itbuffer[:, 0] >= 0) & (itbuffer[:, 0] < imageW) & (itbuffer[:, 1] >= 0) & (itbuffer[:, 1] < imageH)]
     return itbuffer
 
@@ -120,20 +119,21 @@ class Mapping:
         laser_mat[:2, :] = laser
 
         laser_global = np.matmul(pose_mat, laser_mat)
-        
+
         # 로직 9. pose와 laser의 grid map index 변환
         pose_x = (pose[0] - self.map_center[0] + (self.map_size[0]*self.map_resolution)/2) / self.map_resolution
         pose_y = (pose[1] - self.map_center[1] + (self.map_size[1]*self.map_resolution)/2) / self.map_resolution
         laser_global_x = (laser_global[0, :] - self.map_center[0] + (self.map_size[0]*self.map_resolution)/2) / self.map_resolution
         laser_global_y = (laser_global[1, :] - self.map_center[1] + (self.map_size[1]*self.map_resolution)/2) / self.map_resolution
 
-        
+
         # 로직 10. laser scan 공간을 맵에 표시
         for i in range(laser_global.shape[1]):
             p1 = np.array([pose_x, pose_y]).reshape(-1).astype(np.int32)
             p2 = np.array([laser_global_x[i], laser_global_y[i]]).astype(np.int32)
 
             line_iter = createLineIterator(p1, p2, self.map)
+            print(line_iter)
 
             if line_iter.shape[0] == 0:
                 continue
@@ -148,8 +148,8 @@ class Mapping:
             ## Occupied
             self.map[avail_y[-1], avail_x[-1]] += self.occu_up
             self.map[avail_y[-1], avail_x[-1]] = np.clip(self.map[avail_y[-1], avail_x[-1]], 0, 1)
-                
-        self.show_pose_and_points(pose, laser_global) 
+
+        self.show_pose_and_points(pose, laser_global)
 
     def __del__(self):
         # 로직 12. 종료 시 map 저장
@@ -179,10 +179,11 @@ class Mapping:
             cv2.circle(map_bgr, center, 1, (0,255,0), -1)
 
         center = (pose_x.astype(np.int32)[0], pose_y.astype(np.int32)[0])
-        
+
         cv2.circle(map_bgr, center, 2, (0,0,255), -1)
 
         map_bgr = cv2.resize(map_bgr, dsize=(0, 0), fx=self.map_vis_resize_scale, fy=self.map_vis_resize_scale)
+        print("Map shape:", map_bgr.shape)
         cv2.imshow('Sample Map', map_bgr)
         cv2.waitKey(1)
 
@@ -193,16 +194,16 @@ class Mapper(Node):
     def __init__(self):
         super().__init__('Mapper')
         self.last_save_time = time.time()
-        
+
         # 로직 1 : publisher, subscriber, msg 생성
         self.subscription = self.create_subscription(LaserScan,'/scan',self.scan_callback,10)
         self.map_pub = self.create_publisher(OccupancyGrid, '/map', 1)
-        
+
         self.map_msg=OccupancyGrid()
         self.map_msg.header.frame_id="map"
         self.map_size=int(params_map["MAP_SIZE"][0]\
             /params_map["MAP_RESOLUTION"]*params_map["MAP_SIZE"][1]/params_map["MAP_RESOLUTION"])
-        
+
 
         m = MapMetaData()
         m.resolution = params_map["MAP_RESOLUTION"]
@@ -219,14 +220,14 @@ class Mapper(Node):
         # 로직 2 : mapping 클래스 생성
         self.mapping = Mapping(params_map)
 
-    
+
     def scan_callback(self, msg):
         print("scan_callback start!!!")
         # 로직 4 : laser scan 메시지 안의 ground truth pose 받기
         pose_x = msg.range_min
         pose_y = msg.scan_time
         heading = msg.time_increment
-        
+
         # 로직 5 : lidar scan 결과 수신
         distance = np.array(msg.ranges)  # LaserScan의 거리 데이터 (길이 360의 배열)
 
@@ -242,7 +243,7 @@ class Mapper(Node):
         # 로직 6 : map 업데이트 실행(4,5번이 완성되면 바로 주석처리된 것을 해제하고 쓰시면 됩니다.)
         pose = np.array([[pose_x], [pose_y], [heading]])
         self.mapping.update(pose, laser)
-        
+
         np_map_data = self.mapping.map.reshape(-1)
         list_map_data = [100 - int(value * 100) for value in np_map_data]
         list_map_data = [max(0, min(100, v)) for v in list_map_data]
@@ -273,6 +274,7 @@ def save_map(node,file_path):
     for pixel in node.map_msg.data :
 
         data+='{0} '.format(pixel)
+    print("map 데이터 저장 완료")
     f.write(data) 
     f.close()
 
