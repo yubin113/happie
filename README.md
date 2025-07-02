@@ -27,29 +27,29 @@
 
 #### 관리자 시스템 화면
 
-![패트롤_웹__online-video-cutter.com_](/uploads/c0bf0d45fcc2d7b0333ae300e96a13e5/패트롤_웹__online-video-cutter.com_.gif){width=600}
+![패트롤_웹__online-video-cutter.com_](/uploads/c0bf0d45fcc2d7b0333ae300e96a13e5/패트롤_웹__online-video-cutter.com_.gif)
 
 #### 시뮬레이터 화면
 
-![전체순회_5배속](/uploads/b69863cfe1fcff0adb42e84550ae73f8/전체순회_5배속.gif){width=600}
+![전체순회_5배속](/uploads/b69863cfe1fcff0adb42e84550ae73f8/전체순회_5배속.gif)
 
 ### 2-2. 기자재 관리 : 링거폴대 및 휠체어
 
 명령에 따라 하피는 복도의 링거폴대 또는 휠체어를 감지하고 해당 기자재를 목적지까지 옮긴다.
 
-![_최종_기자재_5배속_컷편집_이동만](/uploads/4ee20fd28bca08f3fbfc25d773e4f27a/_최종_기자재_5배속_컷편집_이동만.gif){width=600}
+![_최종_기자재_5배속_컷편집_이동만](/uploads/4ee20fd28bca08f3fbfc25d773e4f27a/_최종_기자재_5배속_컷편집_이동만.gif)
 
 ### 2-3. 낙상사고 감지 및 대응
 
 원내를 상시 순회하는 하피가 쓰러진 사람을 발견하면 멈춘다. 현장의 위치와 사고 이미지를 촬영하여 관리자에게 전송하고 경고음을 출력한다. 특히, 병원 직원 수가 적은 야간에 초점을 두며, 어두운 환경에서도 명확하게 포착함을 알 수 있다.
 
-![_최종_낙상야간2_5배속__1_](/uploads/cd2b987b7c917bd31ac4b40fe9db41da/_최종_낙상야간2_5배속__1_.gif){width=600}
+![Image](https://github.com/user-attachments/assets/3ae1b2e7-627c-462b-8c58-e06decc390af)
 
 ### 2-4. 대화형 음성인식 챗봇
 
 음성 또는 자주 하는 질문을 선택하여 하피에게 물을 수 있다. 텍스트 및 음성의 응답을 제공 받는다. 병원 또는 원내 시설 관련, 이외 다양한 일상 대화를 나눈다. 특정 장소로 하피에게 직접 주행 안내를 받을 수 있다.
 
-![llm__online-video-cutter.com_](/uploads/a7c7e35d95b743780e711d3d6967b1ef/llm__online-video-cutter.com_.gif){width=600}
+![Image](https://github.com/user-attachments/assets/2c3cd5da-9497-4af5-9101-548e3ad1cf6b)
 
 # Chapter3. 기술
 
@@ -57,22 +57,22 @@
 
 2D LiDAR 센서를 활용해 실내 물체까지의 거리 정보를 스캔한다. 이에 SLAM 알고리즘을 적용하여 실시간 지도 생성을 수행한다.
 
-![매핑_10배속__online-video-cutter.com_](/uploads/331938db0f3dd298dd5593f16e429278/매핑_10배속__online-video-cutter.com_.gif){width=400}
+![매핑_10배속__online-video-cutter.com_](/uploads/331938db0f3dd298dd5593f16e429278/매핑_10배속__online-video-cutter.com_.gif)
 
 
 ### A* 알고리즘 기반 경로 계획
 
 A* 알고리즘이란 시작 지점에서 목표 지점까지의 최적 경로를 찾는 알고리즘이다. 하피는 벽에 가까울수록 비용이 증가하며, 지고 내 안전 마진 5 이내의 비용 가중치를 부여해 최적 경로를 산출한다.
 
-![a_star_result](/uploads/8edefab5f3421551812e29de8ba4a100/a_star_result.png){width=400}
+![Image](https://github.com/user-attachments/assets/7f01cdcf-2944-4065-a17c-ce24b08092dc)
 
 ### YOLOv5를 활용한 물체 인식 및 감지
 
 시뮬레이터와 버전 문제와 클래스 단위의 분류가 가능한 특징을 활용하고자 YOLOv5를 사용하여 데이터셋을 학습한다. 정확도를 높이기 위해 데이터의 다양성과 수량을 증가한다. 이러한 데이터 학습은 기자재 관리와 낙상 감지 기능에 활용된다.
 
-![_](/uploads/7bbdb75f4995bf709322c1a94ef37db6/_.png){width=800}
+![Image](https://github.com/user-attachments/assets/b517ac9c-9b21-47b2-a8ca-9cff1f95a891)
 
-![2](/uploads/b1bc6aefc7b818f9787885313fd334ec/2.png){width=800}
+![Image](https://github.com/user-attachments/assets/fc094d79-f73f-4d5d-9a7f-cd244ccfcebc)
 
 ### RAG 기반 LangChain 및 LLM 활용
 
@@ -84,7 +84,7 @@ RAG(Retrieval-Augmented Generation)란 외부 지식을 검색하고, 그 결과
 4. ChatGPT 3.5 turbo 활용 프롬프트 템프릿 기반 응답 생성 및 정제 (대화 유도, 오류 대응)
 5. 응답 산출
 
-![image](/uploads/137fcb518a6f8acbe327c328bb1cb0bc/image.png){width=497 height=219}
+![Image](https://github.com/user-attachments/assets/5e13394e-3255-4a3e-afaf-b1532518a834)
 
 ### 기술 스택
 
@@ -180,27 +180,27 @@ RAG(Retrieval-Augmented Generation)란 외부 지식을 검색하고, 그 결과
 
 #### Figma
 
-![image](/uploads/74d67ec564976be9e4c8c73a090d638c/image.png){width=552 height=608}
+![Image](https://github.com/user-attachments/assets/e1d05eb8-882d-4b3f-beda-6e23b32a28f8)
 
 #### 시뮬레이션
 
-![스크린샷_2025-03-20_134020](/uploads/02727e6896fd7ee71d305d16ff33b97b/스크린샷_2025-03-20_134020.png){width=800}
+![Image](https://github.com/user-attachments/assets/c1f79384-07e7-4557-a4a8-2afa0cf5b344)
 
 ### 4-3. DB 설계
 
-![image](/uploads/3d95604a84002090cd9beea420710f26/image.png){width=748 height=497}
+![Image](https://github.com/user-attachments/assets/2161f32c-cf75-4ad5-bc7f-91a9049110c6)
 
 ### 4-4. 아키텍처 구조
 
-![최종_구조도](/uploads/691d1df4fb784a89f963ad0ee9f8c180/최종_구조도.png)
+![Image](https://github.com/user-attachments/assets/d3d84ad6-3041-4bfd-a2cb-16438caf72d2)
 
 ### 4-5. API 및 MQTT 통신 설계
 
 #### API 통신 설계
-![image](/uploads/608b35f314f7d4a7ba509d8063dc3168/image.png)
+![Image](https://github.com/user-attachments/assets/93832afa-dd7b-4294-b2c1-cd801606a8f6)
 #### MQTT 통신 설계
-![image](/uploads/5e039ea7604ab92c3e36379b5355747f/image.png)
+![Image](https://github.com/user-attachments/assets/961f9384-3aaa-40e7-aa19-28af42dea96e)
 
 # Chatper5. 팀 구성
 
-![image](/uploads/3387e093c5adbfd0d0eee3c5cd772269/image.png){width=794 height=464}
+![Image](https://github.com/user-attachments/assets/303d9a56-0439-4e60-a319-eda590c9f15a)
